@@ -14,6 +14,9 @@
 		FDFA09582BACFB5A00A4DBF7 /* HelloWorldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFA09572BACFB5A00A4DBF7 /* HelloWorldTests.swift */; };
 		FDFA09622BACFB5A00A4DBF7 /* HelloWorldUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFA09612BACFB5A00A4DBF7 /* HelloWorldUITests.swift */; };
 		FDFA09642BACFB5A00A4DBF7 /* HelloWorldUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFA09632BACFB5A00A4DBF7 /* HelloWorldUITestsLaunchTests.swift */; };
+		FDFBBE762BAFFE9D00035A58 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFBBE752BAFFE9D00035A58 /* CameraView.swift */; };
+		FDFBBE782BAFFF9900035A58 /* BTController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFBBE772BAFFF9900035A58 /* BTController.swift */; };
+		FDFBBE9A2BB04B2700035A58 /* GCDWebServer in Frameworks */ = {isa = PBXBuildFile; productRef = FDFBBE992BB04B2700035A58 /* GCDWebServer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +47,9 @@
 		FDFA095D2BACFB5A00A4DBF7 /* HelloWorldUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HelloWorldUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDFA09612BACFB5A00A4DBF7 /* HelloWorldUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorldUITests.swift; sourceTree = "<group>"; };
 		FDFA09632BACFB5A00A4DBF7 /* HelloWorldUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorldUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		FDFBBE752BAFFE9D00035A58 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		FDFBBE772BAFFF9900035A58 /* BTController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTController.swift; sourceTree = "<group>"; };
+		FDFBBE792BB001E300035A58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDFBBE9A2BB04B2700035A58 /* GCDWebServer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,10 +101,13 @@
 		FDFA09452BACFB5800A4DBF7 /* HelloWorld */ = {
 			isa = PBXGroup;
 			children = (
+				FDFBBE792BB001E300035A58 /* Info.plist */,
 				FDFA09462BACFB5800A4DBF7 /* HelloWorldApp.swift */,
 				FDFA09482BACFB5800A4DBF7 /* ContentView.swift */,
 				FDFA094A2BACFB5900A4DBF7 /* Assets.xcassets */,
 				FDFA094C2BACFB5900A4DBF7 /* Preview Content */,
+				FDFBBE752BAFFE9D00035A58 /* CameraView.swift */,
+				FDFBBE772BAFFF9900035A58 /* BTController.swift */,
 			);
 			path = HelloWorld;
 			sourceTree = "<group>";
@@ -143,6 +153,9 @@
 			dependencies = (
 			);
 			name = HelloWorld;
+			packageProductDependencies = (
+				FDFBBE992BB04B2700035A58 /* GCDWebServer */,
+			);
 			productName = HelloWorld;
 			productReference = FDFA09432BACFB5800A4DBF7 /* HelloWorld.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +228,9 @@
 				Base,
 			);
 			mainGroup = FDFA093A2BACFB5800A4DBF7;
+			packageReferences = (
+				FDFBBE982BB04B2600035A58 /* XCRemoteSwiftPackageReference "GCDWebServer" */,
+			);
 			productRefGroup = FDFA09442BACFB5800A4DBF7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -257,8 +273,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDFBBE762BAFFE9D00035A58 /* CameraView.swift in Sources */,
 				FDFA09492BACFB5800A4DBF7 /* ContentView.swift in Sources */,
 				FDFA09472BACFB5800A4DBF7 /* HelloWorldApp.swift in Sources */,
+				FDFBBE782BAFFF9900035A58 /* BTController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -420,9 +438,13 @@
 				DEVELOPMENT_TEAM = YF72WZ25CP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HelloWorld/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Requires bluetooth to access 3DScan";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "We need access to bluetooth to control the scanner";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera to make scans";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need access to photos to store photos";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "need to access photo library to store photos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -453,9 +475,13 @@
 				DEVELOPMENT_TEAM = YF72WZ25CP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HelloWorld/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Requires bluetooth to access 3DScan";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "We need access to bluetooth to control the scanner";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera to make scans";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need access to photos to store photos";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "need to access photo library to store photos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -587,6 +613,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FDFBBE982BB04B2600035A58 /* XCRemoteSwiftPackageReference "GCDWebServer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yene/GCDWebServer.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FDFBBE992BB04B2700035A58 /* GCDWebServer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FDFBBE982BB04B2600035A58 /* XCRemoteSwiftPackageReference "GCDWebServer" */;
+			productName = GCDWebServer;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FDFA093B2BACFB5800A4DBF7 /* Project object */;
 }
