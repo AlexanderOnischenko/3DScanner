@@ -17,17 +17,15 @@ import CoreBluetooth
 class BluetoothController: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     private var centralManager: CBCentralManager!
     private var peripheral: CBPeripheral?
-    private var service: CBService?
     private var characteristic: CBCharacteristic?
     private var numShots : Int
     private var isBusy : Bool
-    private var isWriting : Bool
+    private let serialQueue = DispatchQueue(label: "com.btcontroller.serialqueue") // для синхронного выполнения записи в BT
     
     
     override init() {
         numShots = default_numshots
         isBusy = false
-        isWriting = false
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
     }
@@ -73,7 +71,7 @@ class BluetoothController: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         for service in services {
             //print("\(service.uuid)")
             if service.uuid == serviceUUID {
-                self.service = service
+                //self.service = service
                 peripheral.discoverCharacteristics(nil, for: service)
             }
         }
@@ -111,52 +109,62 @@ class BluetoothController: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     // Метод для отправки данных
     func sendData(data: Data) {
-        //print(String(data: data, encoding: .utf8))
-        if let peripheral = peripheral, let characteristic = characteristic {
-            isBusy = true
-            peripheral.writeValue(data, for: characteristic, type: .withResponse)
-        }
-    }
-    
-    // Метод для чтения данных
-    func waitForSuccess() {
-        if !isReady() {
-            return
-        }
-        // Проверяем, что подключение к устройству установлено
-        guard let peripheral = self.peripheral, let characteristic = self.characteristic else {
-            print("Peripheral or characteristic is nil")
-            return
-        }
-        while true {
-            peripheral.readValue(for: characteristic)
-            //self.peripheral?.readValue(for: characteristic!)
-            if let data = characteristic.value {
-                // Преобразуем полученные данные в строку
-                guard let stringValue = String(data: data, encoding: .utf8) else {
-                    print ("проблема декодирования")
-                    return
-                }
-                // Если получен символ '0', выходим из цикла
-                //print(stringValue)
-                if stringValue == "0" {
-                    print("Success: Received '0'")
-                    break
+        serialQueue.sync {
+            if let peripheral = self.peripheral, let characteristic = self.characteristic {
+                if !isBusy {
+                    isBusy = true
+                    peripheral.writeValue(data, for: characteristic, type: .withResponse)
                 }
             }
         }
-        isBusy = false
     }
     
+
+    
     func isReady() -> Bool {
-        return self.characteristic != nil
+        guard let peripheral = self.peripheral, let characteristic = self.characteristic else {
+            print("Peripheral or characteristic is nil")
+            return false
+        }
+        if self.peripheral?.state != CBPeripheralState.connected {
+            return false
+        }
+        // читаем на главной очереди, чтобы процедуры чтения и записи шли синхронно (по очереди)
+        var res = false
+        serialQueue.sync {
+            // проверяем isBusy, чтобы не вычитывать из порта, если мы уже находили там ноль
+            if isBusy == false {
+                res = true
+                return
+            }
+            // читаем порт, ждем ноль
+            self.peripheral?.readValue(for: characteristic)
+            if let data = characteristic.value {
+                guard let stringValue = String(data: data, encoding: .utf8) else {
+                    print ("проблема декодирования")
+                    res = false
+                    return
+                }
+                // Если получен символ '0', то только в этом случае сбрасываем isBusy и выходим
+                if stringValue == "0" {
+                    isBusy = false
+                    res = true
+                    return
+                }
+                // если не ноль, то возвращаем false
+                res = false
+            }
+            // если nil, то возвращаем false?
+            res = false
+        }
+        return res
     }
     
     func startScanning() {
-        if isBusy || isWriting {
+        // проверяем готовность устройства
+        if !isReady() {
             return
         }
-        isWriting = true
         // команды для начала сканирования
         //print("шлем восьмерку\n")
         guard let data:Data = "8".data(using: .ascii) else {
@@ -164,24 +172,19 @@ class BluetoothController: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
                     return
                 }
         self.sendData(data: data)
-        waitForSuccess()
-        isWriting = false
-        print("символ 0 получен")
-    }
+     }
     
     func stopScanning() {
-        if isBusy || isWriting {
+        // проверяем готовность устройства
+        if !isReady() {
             return
         }
-        isWriting = true
-        // команды для начала сканирования
+        // команды для поворота обратно
         guard let data:Data = "9".data(using: .utf8) else {
                     // Обработка ошибки преобразования строки в данные
                     return
                 }
         self.sendData(data: data)
-        waitForSuccess()
-        isWriting = false
     }
     
     func getNumshots() -> Int {
