@@ -6,7 +6,7 @@
 //
 
 internal let default_numshots = 20
-internal let gearRatio = 51/12
+internal let gearRatio512 = 2176 // real gear ratio is 51/12, then we multiply it on 512 (full cycle)
 internal let BTDeviceName = "BT05" // Name of My BLE. Initialize: AT+NAMECC2541\r\n
 internal let serviceUUID = CBUUID(string: "FFE0") // Service UUID of My BLE. Initialize: AT+UUIDFABF\r\n
 internal let characteristicUUID = CBUUID(string: "FFE1") // Char ID of My BLE. Initialize: AT+CHARA2B2\r\n
@@ -14,11 +14,11 @@ internal let characteristicUUID = CBUUID(string: "FFE1") // Char ID of My BLE. I
 
 import CoreBluetooth
 
-class BluetoothController: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
+class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     private var centralManager: CBCentralManager!
     private var peripheral: CBPeripheral?
     private var characteristic: CBCharacteristic?
-    private var numShots : Int
+    @Published var numShots : Int
     private var isBusy : Bool
     private let serialQueue = DispatchQueue(label: "com.btcontroller.serialqueue") // для синхронного выполнения записи в BT
     
@@ -191,11 +191,34 @@ class BluetoothController: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         return numShots
     }
     
-    func setNumshots(num: Int) {
-        if (num >= 0) {
-            numShots = num
-        } else {
-            numShots = 0
+    func decreaseNumber() {
+        if numShots == 1 {
+            return
         }
+        setNumshots(num: getNumshots()-1)
+    }
+
+    func increaseNumber() {
+        setNumshots(num: getNumshots()+1)
+    }
+
+    func setNumshots(num: Int) -> Bool {
+        if !isReady() {
+            return false
+        } else {
+            if (num >= 0) {
+                numShots = num
+            } else {
+                numShots = 0
+            }
+            let steps: Int = gearRatio512 / numShots
+            print("S\(steps)X")
+            guard let data:Data = "S\(steps)X".data(using: .utf8) else {
+                // Обработка ошибки преобразования строки в данные
+                return false
+            }
+            self.sendData(data: data)
+        }
+        return true
     }
 }

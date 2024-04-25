@@ -10,12 +10,44 @@ import UIKit
 import AVFoundation
 
 struct ContentView : View {
-    let myBT = BluetoothController()
+    @ObservedObject var myBT = BluetoothController()
     var body: some View {
         ZStack {
             CameraViewRepresentable()
                             .edgesIgnoringSafeArea(.all)
               VStack {
+
+                      HStack {
+                          Button(action: myBT.increaseNumber) {
+                              Image(systemName: "arrow.up")
+                                  .font(.system(size: 24))
+                                  .foregroundColor(.white)
+                                  .padding()
+                                  .frame(height: 48) // Устанавливаем высоту кнопки по высоте текста
+                                  .background(Color.green)
+                                  .cornerRadius(5)
+                          }
+                          
+                          Text("\(myBT.getNumshots())")
+                              .font(.system(size: 48)) // Крупные цифры
+                              .foregroundColor(.white) // Белый цвет текста
+                              .padding() // Добавляем немного отступа вокруг текста
+                              .background(Color.blue) // Синий фон
+                              .cornerRadius(10) // Закругляем углы фона
+                              .padding()
+                          
+                          Button(action: myBT.decreaseNumber) {
+                              Image(systemName: "arrow.down")
+                                  .font(.system(size: 24))
+                                  .foregroundColor(.white)
+                                  .padding()
+                                  .frame(height: 48) // Устанавливаем высоту кнопки по высоте текста
+                                  .background(Color.red)
+                                  .cornerRadius(5)
+                          }
+                      }
+                      .padding()
+                  
                   Spacer()
                   HStack {
                       Spacer()
@@ -43,10 +75,11 @@ struct ContentView : View {
                       Spacer()
                   }
                   .padding()
+                  }
               }
           }
       }
-}
+
 
 
 struct ContentView_Previews: PreviewProvider {
