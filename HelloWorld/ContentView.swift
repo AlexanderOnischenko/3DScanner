@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 
 struct ContentView : View {
-//    let myBT = BluetoothController()
+    let myBT = BluetoothController()
     var body: some View {
         ZStack {
             CameraViewRepresentable()
@@ -21,7 +21,7 @@ struct ContentView : View {
                       Spacer()
                       Button(action: {
                           // Действие для кнопки Start
-//                          myBT.startScanning()
+                          myBT.startScanning()
                           
                       }) {
                           Image(systemName: "play.circle") // Используйте подходящую SF Symbol
@@ -33,7 +33,7 @@ struct ContentView : View {
                       
                       Button(action: {
                           // Действие для кнопки Stop
- //                         myBT.stopScanning()
+                          myBT.stopScanning()
                       }) {
                           Image(systemName: "stop.circle") // Используйте подходящую SF Symbol
                               .resizable()
