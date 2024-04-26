@@ -12,7 +12,7 @@ struct ContentView : View {
     
     var body: some View {
          ZStack {
-             viewModel.myCamera
+             CameraViewRepresentable(viewModel: viewModel)
                  .edgesIgnoringSafeArea(.all)
              VStack {
                  controlPanel

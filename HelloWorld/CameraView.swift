@@ -7,7 +7,7 @@
 
 import UIKit
 import AVFoundation
-import GCDWebServer
+//import GCDWebServer
 import Photos
 
 class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, AVCapturePhotoCaptureDelegate {
@@ -20,7 +20,7 @@ class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
     private var focusIndicator: UIView!
 
     
-    var webServer = GCDWebServer()
+    //var webServer = GCDWebServer()
         
     override func viewDidLoad() {
         checkPermission()
@@ -28,7 +28,7 @@ class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
    //     sessionQueue.async { [unowned self] in
    //         guard permissionGranted else { return }
         self.setupCaptureSession()
-        setupFocusIndicator()
+        self.setupFocusIndicator()
  
             
    //         self.setupLayers()
@@ -43,7 +43,7 @@ class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
             self!.setupLayers()
         }
 
-        setupWebServer()
+ //       setupWebServer()
         // Добавляем Gesture Recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(focusAndExposeTap(_:)))
         view.addGestureRecognizer(tapGesture)
@@ -84,7 +84,7 @@ class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
         }
     }
     
-    func setupWebServer() {
+/*    func setupWebServer() {
         webServer.addHandler(forMethod: "GET", path: "/takePhoto", request: GCDWebServerRequest.self) { [weak self] request in
             self?.takePhoto()
             return GCDWebServerDataResponse(html: "Taking photo...")
@@ -92,7 +92,7 @@ class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
 
         webServer.start(withPort: 8080, bonjourName: "iOS Web Server")
         print("Server is running on \(String(describing: webServer.serverURL))")
-    }
+    }*/
     
     func takePhoto() {
         let settings = AVCapturePhotoSettings()
@@ -236,7 +236,7 @@ class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
         self.setupFocusIndicator()  // Ensure focusIndicator is on top of the camera layer
     }
     
-    }
+}
 
 
 
