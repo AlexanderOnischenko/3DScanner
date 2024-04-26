@@ -6,14 +6,13 @@
 //
 
 import SwiftUI
-import UIKit
-import AVFoundation
 
 struct ContentView : View {
-    @ObservedObject var myBT = BluetoothController()
+    @ObservedObject var viewModel = ContentViewViewModel()
+    
     var body: some View {
          ZStack {
-             CameraViewRepresentable()
+             viewModel.myCamera
                  .edgesIgnoringSafeArea(.all)
              VStack {
                  controlPanel
@@ -25,7 +24,7 @@ struct ContentView : View {
 
      private var controlPanel: some View {
          HStack {
-             Button(action: myBT.increaseNumber) {
+             Button(action: viewModel.increaseNumber) {
                  Image(systemName: "arrow.up")
                      .font(.system(size: 24))
                      .foregroundColor(.white)
@@ -35,7 +34,7 @@ struct ContentView : View {
                      .cornerRadius(5)
              }
              
-             Text("\(myBT.getNumshots())")
+             Text("\(viewModel.myBT.numShots)")
                  .font(.system(size: 48))
                  .foregroundColor(.white)
                  .padding()
@@ -43,7 +42,7 @@ struct ContentView : View {
                  .cornerRadius(10)
                  .padding()
              
-             Button(action: myBT.decreaseNumber) {
+             Button(action: viewModel.decreaseNumber) {
                  Image(systemName: "arrow.down")
                      .font(.system(size: 24))
                      .foregroundColor(.white)
@@ -59,7 +58,7 @@ struct ContentView : View {
      private var bottomButtons: some View {
          HStack {
              Spacer()
-             Button(action: startScanning) {
+             Button(action: viewModel.startScanning) {
                  Image(systemName: "play.circle")
                      .resizable()
                      .frame(width: 50, height: 50)
@@ -67,7 +66,7 @@ struct ContentView : View {
              
              Spacer()
              
-             Button(action: stopScanning) {
+             Button(action: viewModel.stopScanning) {
                  Image(systemName: "stop.circle")
                      .resizable()
                      .frame(width: 50, height: 50)
@@ -78,13 +77,6 @@ struct ContentView : View {
          .padding()
      }
 
-     private func startScanning() {
-         myBT.startScanning()
-     }
-
-     private func stopScanning() {
-         myBT.stopScanning()
-     }
 }
 
 
@@ -92,16 +84,6 @@ struct ContentView : View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-    }
-}
-
-struct CameraViewRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> CameraView {
-        return CameraView()
-    }
-    
-    func updateUIViewController(_ uiViewController: CameraView, context: Context) {
-        // Нет необходимости в обновлении
     }
 }
 

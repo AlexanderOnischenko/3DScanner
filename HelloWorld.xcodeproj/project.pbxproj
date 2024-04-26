@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FD71FDD52BDBEB8700927584 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD71FDD42BDBEB8700927584 /* ContentViewModel.swift */; };
 		FDFA09472BACFB5800A4DBF7 /* HelloWorldApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFA09462BACFB5800A4DBF7 /* HelloWorldApp.swift */; };
 		FDFA09492BACFB5800A4DBF7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFA09482BACFB5800A4DBF7 /* ContentView.swift */; };
 		FDFA094B2BACFB5900A4DBF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDFA094A2BACFB5900A4DBF7 /* Assets.xcassets */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FD71FDD42BDBEB8700927584 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		FDFA09432BACFB5800A4DBF7 /* HelloWorld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelloWorld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDFA09462BACFB5800A4DBF7 /* HelloWorldApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorldApp.swift; sourceTree = "<group>"; };
 		FDFA09482BACFB5800A4DBF7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				FDFBBE792BB001E300035A58 /* Info.plist */,
 				FDFA09462BACFB5800A4DBF7 /* HelloWorldApp.swift */,
 				FDFA09482BACFB5800A4DBF7 /* ContentView.swift */,
+				FD71FDD42BDBEB8700927584 /* ContentViewModel.swift */,
 				FDFA094A2BACFB5900A4DBF7 /* Assets.xcassets */,
 				FDFA094C2BACFB5900A4DBF7 /* Preview Content */,
 				FDFBBE752BAFFE9D00035A58 /* CameraView.swift */,
@@ -277,6 +280,7 @@
 				FDFA09492BACFB5800A4DBF7 /* ContentView.swift in Sources */,
 				FDFA09472BACFB5800A4DBF7 /* HelloWorldApp.swift in Sources */,
 				FDFBBE782BAFFF9900035A58 /* BTController.swift in Sources */,
+				FD71FDD52BDBEB8700927584 /* ContentViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

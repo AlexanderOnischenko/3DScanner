@@ -87,6 +87,8 @@ class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate,
                 print("YESS!!")
                 // Подписываемся на уведомления для этой характеристики
                 self.peripheral?.setNotifyValue(true, for: characteristic)
+                // инициализируем устройство нужными командами
+                setNumshots(num: numShots)
                 // --> Без этого куска кода не работает. Надо разобраться, зачем он нужен
                 self.peripheral?.readValue(for: characteristic)
                 if let data = characteristic.value {
@@ -160,7 +162,7 @@ class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate,
         return res
     }
     
-    func startScanning() {
+    func rotate() {
         // проверяем готовность устройства
         if !isReady() {
             return
@@ -195,10 +197,12 @@ class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate,
         if numShots == 1 {
             return
         }
+        objectWillChange.send()
         setNumshots(num: getNumshots()-1)
     }
 
     func increaseNumber() {
+        objectWillChange.send()
         setNumshots(num: getNumshots()+1)
     }
 
