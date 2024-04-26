@@ -10,7 +10,7 @@ import SwiftUI
 import UIKit
 import AVFoundation
 
-class ContentViewViewModel: ObservableObject {
+class ContentViewModel: ObservableObject {
     public var isScanningInterrupted = false
     @Published var myBT = BluetoothController()
     public var myCamera = CameraViewRepresentable()

@@ -18,6 +18,7 @@ class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
     private var photoOutput: AVCapturePhotoOutput?
     var screenRect: CGRect! = nil // For view dimensions
     private var focusIndicator: UIView!
+
     
     var webServer = GCDWebServer()
         
