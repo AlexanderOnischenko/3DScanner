@@ -7,14 +7,12 @@
 
 import AVFoundation
 import Photos
-import Combine
 import UIKit
 
 class CameraManager: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCapturePhotoCaptureDelegate {
-    @Published var photoOutput: AVCapturePhotoOutput?
-    @Published var permissionGranted = false
-
+    private var photoOutput: AVCapturePhotoOutput?
     private let captureSession = AVCaptureSession()
+    @Published var permissionGranted = false
 
     lazy var previewLayer: AVCaptureVideoPreviewLayer = {
         let layer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -28,26 +26,41 @@ class CameraManager: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleB
     }
 
     func checkPermission(completion: @escaping (Bool) -> Void) {
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .authorized:
-            DispatchQueue.main.async {
-                self.permissionGranted = true
-                completion(true)
-            }
-        case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .video) { granted in
-                DispatchQueue.main.async {
-                    self.permissionGranted = granted
-                    completion(granted)
-                }
-            }
-        default:
-            DispatchQueue.main.async {
-                self.permissionGranted = false
-                completion(false)
-            }
-        }
-    }
+         switch AVCaptureDevice.authorizationStatus(for: .video) {
+         case .authorized:
+             checkPhotoLibraryPermission(completion: completion)
+         case .notDetermined:
+             AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+                 DispatchQueue.main.async {
+                     self?.permissionGranted = granted
+                     if granted {
+                         self?.checkPhotoLibraryPermission(completion: completion)
+                     } else {
+                         completion(false)
+                     }
+                 }
+             }
+         default:
+             DispatchQueue.main.async {
+                 completion(false)
+             }
+         }
+     }
+
+     private func checkPhotoLibraryPermission(completion: @escaping (Bool) -> Void) {
+         switch PHPhotoLibrary.authorizationStatus() {
+         case .authorized:
+             completion(true)
+         case .notDetermined:
+             PHPhotoLibrary.requestAuthorization { status in
+                 DispatchQueue.main.async {
+                     completion(status == .authorized)
+                 }
+             }
+         default:
+             completion(false)
+         }
+     }
 
     func setupCaptureSession() {
         // Настройка устройства видеозахвата для использования задней камеры
@@ -81,11 +94,17 @@ class CameraManager: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleB
     func takePhoto() {
         var photoSettings = AVCapturePhotoSettings()
         // Создание настроек фотографирования с предпочтительным форматом файла
-        if #available(iOS 11.0, *), photoOutput?.availablePhotoCodecTypes.contains(.jpeg) ?? false {
-            photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
-        } else {
-            // Если JPEG недоступен, используем стандартные настройки
-            photoSettings = AVCapturePhotoSettings()
+        // Проверяем доступные типы кодеков
+        if #available(iOS 11.0, *), let availableCodecs = photoOutput?.availablePhotoCodecTypes {
+            if availableCodecs.contains(.jpeg) {
+                print("Using JPEG codec")
+                // Явно указываем использовать JPEG
+                photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
+            } else if availableCodecs.contains(.hevc) {
+                print("Using HEVC codec")
+                // Запасной вариант, если HEIC (HEVC) доступен
+                photoSettings = AVCapturePhotoSettings(format:[AVVideoCodecKey: AVVideoCodecType.hevc])
+            }
         }
         photoOutput?.capturePhoto(with: photoSettings, delegate: self)
     }
@@ -98,23 +117,16 @@ class CameraManager: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleB
     }
     
     func savePhoto(image: UIImage, albumName: String = "3dscan") {
-        PHPhotoLibrary.requestAuthorization { [weak self] status in
-            guard status == .authorized, let self = self else {
-                print("Необходимо разрешение на доступ к фото")
-                return
+        PHPhotoLibrary.shared().performChanges({
+            // Создание или поиск альбома и добавление фото
+            self.createOrAddImageToAlbum(image: image, albumName: albumName)
+        }, completionHandler: { success, error in
+            if success {
+                print("Фото успешно сохранено.")
+            } else {
+                print("Ошибка при сохранении фото: \(String(describing: error))")
             }
-            
-            PHPhotoLibrary.shared().performChanges({
-                // Создание или поиск альбома и добавление фото
-                self.createOrAddImageToAlbum(image: image, albumName: albumName)
-            }, completionHandler: { success, error in
-                if success {
-                    print("Фото успешно сохранено.")
-                } else {
-                    print("Ошибка при сохранении фото: \(String(describing: error))")
-                }
-            })
-        }
+        })
     }
     
     private func createOrAddImageToAlbum(image: UIImage, albumName: String) {
