@@ -7,7 +7,6 @@
 
 import UIKit
 import AVFoundation
-//import GCDWebServer
 import Photos
 
 class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, AVCapturePhotoCaptureDelegate {
