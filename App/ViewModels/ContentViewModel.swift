@@ -13,7 +13,7 @@ import AVFoundation
 class ContentViewModel: ObservableObject {
     public var isScanningInterrupted = false
     @Published var myBT = BluetoothController()
-    public var myCamera : CameraView?
+    @Published var cameraManager = CameraManager()
     private var scanningStopped = false
     private let scanningQueue = DispatchQueue(label: "com.example.scanning")
 
@@ -31,7 +31,7 @@ class ContentViewModel: ObservableObject {
                     print("\(iteration)")
                     if self.myBT.rotate() {
                         if !self.scanningStopped {
-                            self.myCamera?.takePhoto()
+                            self.cameraManager.takePhoto()
                             iteration += 1
                         }
                 }
@@ -59,17 +59,3 @@ class ContentViewModel: ObservableObject {
         }
     }
  }
-
-struct CameraViewRepresentable: UIViewControllerRepresentable {
-    @ObservedObject var viewModel: ContentViewModel
- 
-    func makeUIViewController(context: Context) -> CameraView {
-        let camera = CameraView()
-        viewModel.myCamera = camera
-        return camera
-    }
-    
-    func updateUIViewController(_ uiViewController: CameraView, context: Context) {
-        // Нет необходимости в обновлении
-    }
-}

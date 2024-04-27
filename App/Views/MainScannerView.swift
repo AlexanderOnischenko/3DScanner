@@ -12,7 +12,7 @@ struct MainScannerView : View {
     
     var body: some View {
          ZStack {
-             CameraViewRepresentable(viewModel: viewModel)
+             CameraControlView(cameraManager: viewModel.cameraManager)
                  .edgesIgnoringSafeArea(.all)
              VStack {
                  controlPanel
