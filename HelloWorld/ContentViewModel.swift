@@ -23,25 +23,25 @@ class ContentViewModel: ObservableObject {
     
     func startScanning() {
         scanningStopped = false
-        var iteration = 0
-        let numShots = self.myBT.getNumshots()
+        self.myBT.prepareForScanning()
         scanningQueue.async {
-            while iteration < numShots {
-                if !self.scanningStopped {
-                    self.myBT.rotate()
-                    self.myCamera?.takePhoto()
-                    iteration += 1
+            var iteration = 0
+            let numShots = self.myBT.getNumshots()
+            while iteration < numShots, !self.scanningStopped {
                     print("\(iteration)")
+                    if self.myBT.rotate() {
+                        if !self.scanningStopped {
+                            self.myCamera?.takePhoto()
+                            iteration += 1
+                        }
                 }
             }
         }
      }
 
     func stopScanning() {
-        scanningQueue.async{
-            self.scanningStopped = true
-            self.myBT.stopScanning()
-        }
+        self.scanningStopped = true
+        self.myBT.stopScanning()
     }
      
     

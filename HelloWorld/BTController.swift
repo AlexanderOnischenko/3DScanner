@@ -23,7 +23,6 @@ class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate,
     private let serialQueue = DispatchQueue(label: "com.btcontroller.serialqueue") // для синхронного выполнения записи в BT
     private var scanningIsStopped = false
     private var waitingForTermination = false
-    private var terminatingSymbolReceived = true
     private var semaphore = DispatchSemaphore(value: 0)
     
     
@@ -91,7 +90,7 @@ class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate,
                 // Подписываемся на уведомления для этой характеристики
                 self.peripheral?.setNotifyValue(true, for: characteristic)
                 // инициализируем устройство нужными настройками
-                setNumshots(num: numShots)
+                //setNumshots(num: numShots)
             }
         }
     }
@@ -106,12 +105,11 @@ class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate,
             }
             print("пришло \(stringValue)")
             if stringValue == terminatingChar {
-
-                    if !terminatingSymbolReceived {
+                    if waitingForTermination {
                         print("уменьшили семафор")
                         semaphore.signal()
                         // чтобы не посылать повторно, пока его не прочитают
-                        terminatingSymbolReceived = true
+                        waitingForTermination = false
                     }
             
             }
@@ -160,26 +158,36 @@ class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate,
         return res
     }
     
-    func rotate() {
+    func rotate() -> Bool {
         // проверяем готовность устройства
+        print("Async: вошли в rotate")
         if !isReady() {
-            return
+            return false
         }
         // команды для начала сканирования
         //print("шлем восьмерку\n")
         guard let data:Data = "8".data(using: .ascii) else {
                     // Обработка ошибки преобразования строки в данные
-                    return
+                    return false
                 }
         self.sendData(data: data)
         print("Async: ждем в rotate")
         self.waitForSuccess()
         print("Async: проехали rotate")
+        return true
      }
+    
+    func prepareForScanning() {
+        if waitingForTermination {
+            self.semaphore = DispatchSemaphore(value: 1)
+        } else {
+            self.semaphore = DispatchSemaphore(value: 0)
+        }
+    }
     
     func waitForSuccess() {
         // очищаем флаг приема
-        terminatingSymbolReceived = false
+        waitingForTermination = true
         semaphore.wait()
         serialQueue.sync {
             // очищаем флаг isBusy только в случае реального получения терминирующего символа
@@ -192,7 +200,7 @@ class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate,
     
     func stopScanning() {
         scanningIsStopped = true
-        print("Async: прервали сканирование семафором")
+        print("прервали сканирование семафором")
         semaphore.signal()
     }
     
