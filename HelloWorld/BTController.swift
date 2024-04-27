@@ -10,6 +10,7 @@ internal let gearRatio512 = 2176 // real gear ratio is 51/12, then we multiply i
 internal let BTDeviceName = "BT05" // Name of My BLE. Initialize: AT+NAMECC2541\r\n
 internal let serviceUUID = CBUUID(string: "FFE0") // Service UUID of My BLE. Initialize: AT+UUIDFABF\r\n
 internal let characteristicUUID = CBUUID(string: "FFE1") // Char ID of My BLE. Initialize: AT+CHARA2B2\r\n
+internal let terminatingChar = "b"
 
 
 import CoreBluetooth
@@ -19,13 +20,15 @@ class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate,
     private var peripheral: CBPeripheral?
     private var characteristic: CBCharacteristic?
     @Published var numShots : Int
-    private var isBusy : Bool
     private let serialQueue = DispatchQueue(label: "com.btcontroller.serialqueue") // для синхронного выполнения записи в BT
+    private var scanningIsStopped = false
+    private var waitingForTermination = false
+    private var terminatingSymbolReceived = true
+    private var semaphore = DispatchSemaphore(value: 0)
     
     
     override init() {
         numShots = default_numshots
-        isBusy = false
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
     }
@@ -87,34 +90,43 @@ class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate,
                 print("YESS!!")
                 // Подписываемся на уведомления для этой характеристики
                 self.peripheral?.setNotifyValue(true, for: characteristic)
-                // инициализируем устройство нужными командами
+                // инициализируем устройство нужными настройками
                 setNumshots(num: numShots)
-                // --> Без этого куска кода не работает. Надо разобраться, зачем он нужен
-                self.peripheral?.readValue(for: characteristic)
-                if let data = characteristic.value {
-                    // Преобразуем полученные данные в строку
-                    guard let stringValue = String(data: data, encoding: .utf8) else {
-                        print ("проблема декодирования")
-                        return
-                    }
-                    print(stringValue)
-                }
-                // --> Вот до сюда
             }
         }
     }
     
     // Метод делегата CBPeripheralDelegate, вызывается при обновлении характеристик на устройстве
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        if let data = characteristic.value {
+            // Преобразуем полученные данные в строку
+            guard let stringValue = String(data: data, encoding: .utf8) else {
+                print ("проблема декодирования")
+                return
+            }
+            print("пришло \(stringValue)")
+            if stringValue == terminatingChar {
+
+                    if !terminatingSymbolReceived {
+                        print("уменьшили семафор")
+                        semaphore.signal()
+                        // чтобы не посылать повторно, пока его не прочитают
+                        terminatingSymbolReceived = true
+                    }
+            
+            }
+        }
     }
     
     
     // Метод для отправки данных
     func sendData(data: Data) {
+        // для правильного исполнения waitingForTermination должен быть false, иначе в порт ничего не запишется
         serialQueue.sync {
             if let peripheral = self.peripheral, let characteristic = self.characteristic {
-                if !isBusy {
-                    isBusy = true
+                if !waitingForTermination {
+                    print("Q1: пишем\(String(data: data, encoding: .utf8))")
+                    waitingForTermination = true
                     peripheral.writeValue(data, for: characteristic, type: .withResponse)
                 }
             }
@@ -134,30 +146,16 @@ class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate,
         // читаем на главной очереди, чтобы процедуры чтения и записи шли синхронно (по очереди)
         var res = false
         serialQueue.sync {
+            print("Q1: проверяем isBusy")
             // проверяем isBusy, чтобы не вычитывать из порта, если мы уже находили там ноль
-            if isBusy == false {
+            if waitingForTermination == false {
                 res = true
                 return
-            }
-            // читаем порт, ждем ноль
-            self.peripheral?.readValue(for: characteristic)
-            if let data = characteristic.value {
-                guard let stringValue = String(data: data, encoding: .utf8) else {
-                    print ("проблема декодирования")
-                    res = false
-                    return
-                }
-                // Если получен символ '0', то только в этом случае сбрасываем isBusy и выходим
-                if stringValue == "0" {
-                    isBusy = false
-                    res = true
-                    return
-                }
-                // если не ноль, то возвращаем false
+            } else {
+                print("Q1: оу, а мы заняты")
                 res = false
+                return
             }
-            // если nil, то возвращаем false?
-            res = false
         }
         return res
     }
@@ -174,19 +172,28 @@ class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate,
                     return
                 }
         self.sendData(data: data)
+        print("Async: ждем в rotate")
+        self.waitForSuccess()
+        print("Async: проехали rotate")
      }
     
-    func stopScanning() {
-        // проверяем готовность устройства
-        if !isReady() {
-            return
+    func waitForSuccess() {
+        // очищаем флаг приема
+        terminatingSymbolReceived = false
+        semaphore.wait()
+        serialQueue.sync {
+            // очищаем флаг isBusy только в случае реального получения терминирующего символа
+            if !scanningIsStopped {
+                print("Q1: очищаем флаг isBusy")
+                waitingForTermination = false
+            } 
         }
-        // команды для поворота обратно
-        guard let data:Data = "9".data(using: .utf8) else {
-                    // Обработка ошибки преобразования строки в данные
-                    return
-                }
-        self.sendData(data: data)
+    }
+    
+    func stopScanning() {
+        scanningIsStopped = true
+        print("Async: прервали сканирование семафором")
+        semaphore.signal()
     }
     
     func getNumshots() -> Int {
@@ -197,12 +204,12 @@ class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate,
         if numShots == 1 {
             return
         }
-        objectWillChange.send()
+  //      objectWillChange.send()
         setNumshots(num: getNumshots()-1)
     }
 
     func increaseNumber() {
-        objectWillChange.send()
+   //     objectWillChange.send()
         setNumshots(num: getNumshots()+1)
     }
 
@@ -222,6 +229,9 @@ class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate,
                 return false
             }
             self.sendData(data: data)
+            print("Async: ждем в setNumshots")
+            self.waitForSuccess()
+            print("Async: проехали setNumshots")
         }
         return true
     }

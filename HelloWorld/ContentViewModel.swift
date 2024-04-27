@@ -15,6 +15,7 @@ class ContentViewModel: ObservableObject {
     @Published var myBT = BluetoothController()
     public var myCamera : CameraView?
     private var scanningStopped = false
+    private let scanningQueue = DispatchQueue(label: "com.example.scanning")
 
     init() {
     }
@@ -24,34 +25,38 @@ class ContentViewModel: ObservableObject {
         scanningStopped = false
         var iteration = 0
         let numShots = self.myBT.getNumshots()
-        while iteration < numShots {
-//                 Thread.sleep(forTimeInterval: 0.1)
-            self.myBT.rotate()
-            self.waitForSuccess()
-            self.myCamera?.takePhoto()
-            iteration += 1
-            print("\(iteration)")
+        scanningQueue.async {
+            while iteration < numShots {
+                if !self.scanningStopped {
+                    self.myBT.rotate()
+                    self.myCamera?.takePhoto()
+                    iteration += 1
+                    print("\(iteration)")
+                }
+            }
         }
      }
 
-     func stopScanning() {
-         scanningStopped = true
+    func stopScanning() {
+        scanningQueue.async{
+            self.scanningStopped = true
+            self.myBT.stopScanning()
+        }
     }
      
-     private func waitForSuccess() {
-        while !self.myBT.isReady() {
-   //         Thread.sleep(forTimeInterval: 0.1)
-            }
-        }
     
     func decreaseNumber(){
         objectWillChange.send()
-        myBT.decreaseNumber()
+        scanningQueue.async {
+            self.myBT.decreaseNumber()
+        }
     }
     
     func increaseNumber(){
         objectWillChange.send()
-        myBT.increaseNumber()
+        scanningQueue.async {
+            self.myBT.increaseNumber()
+        }
     }
  }
 
