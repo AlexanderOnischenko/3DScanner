@@ -79,8 +79,15 @@ class CameraManager: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleB
     }
 
     func takePhoto() {
-        let settings = AVCapturePhotoSettings()
-        photoOutput?.capturePhoto(with: settings, delegate: self)
+        var photoSettings = AVCapturePhotoSettings()
+        // Создание настроек фотографирования с предпочтительным форматом файла
+        if #available(iOS 11.0, *), photoOutput?.availablePhotoCodecTypes.contains(.jpeg) ?? false {
+            photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
+        } else {
+            // Если JPEG недоступен, используем стандартные настройки
+            photoSettings = AVCapturePhotoSettings()
+        }
+        photoOutput?.capturePhoto(with: photoSettings, delegate: self)
     }
 
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {

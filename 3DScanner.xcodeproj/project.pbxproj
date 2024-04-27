@@ -50,7 +50,7 @@
 		FDFA09532BACFB5A00A4DBF7 /* 3DScannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = 3DScannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDFA095D2BACFB5A00A4DBF7 /* 3DScannerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = 3DScannerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDFBBE772BAFFF9900035A58 /* BTController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTController.swift; sourceTree = "<group>"; };
-		FDFBBE792BB001E300035A58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		FDFBBE792BB001E300035A58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -448,11 +448,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = App/Info.plist;
-				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Requires bluetooth to access 3DScan";
-				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "We need access to bluetooth to control the scanner";
-				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera to make scans";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need access to photos to store photos";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "need to access photo library to store photos";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Give access to bluetooth to be able to communicate with 3D Scanner";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "Give access to bluetooth to operate the scanner";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Give access to camera to be able to scan objects";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Give access to gallery to store photos of 3D objects";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Give access to gallery to store photos of 3D objects";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -484,11 +484,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = App/Info.plist;
-				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Requires bluetooth to access 3DScan";
-				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "We need access to bluetooth to control the scanner";
-				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera to make scans";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need access to photos to store photos";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "need to access photo library to store photos";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Give access to bluetooth to be able to communicate with 3D Scanner";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "Give access to bluetooth to operate the scanner";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Give access to camera to be able to scan objects";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Give access to gallery to store photos of 3D objects";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Give access to gallery to store photos of 3D objects";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
