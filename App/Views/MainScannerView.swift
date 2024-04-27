@@ -1,13 +1,13 @@
 //
-//  ContentView.swift
-//  HelloWorld
+//  MainScannerView.swift
+//  ScannerApp
 //
 //  Created by Alexander Onishchenko on 22.03.2024.
 //
 
 import SwiftUI
 
-struct ContentView : View {
+struct MainScannerView : View {
     @ObservedObject var viewModel = ContentViewModel()
     
     var body: some View {
@@ -83,7 +83,7 @@ struct ContentView : View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        MainScannerView()
     }
 }
 

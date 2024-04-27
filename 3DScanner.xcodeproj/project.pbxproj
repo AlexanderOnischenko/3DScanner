@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		FD71FDD52BDBEB8700927584 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD71FDD42BDBEB8700927584 /* ContentViewModel.swift */; };
-		FDFA09472BACFB5800A4DBF7 /* HelloWorldApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFA09462BACFB5800A4DBF7 /* HelloWorldApp.swift */; };
-		FDFA09492BACFB5800A4DBF7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFA09482BACFB5800A4DBF7 /* ContentView.swift */; };
+		FDFA09472BACFB5800A4DBF7 /* ScannerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFA09462BACFB5800A4DBF7 /* ScannerApp.swift */; };
+		FDFA09492BACFB5800A4DBF7 /* MainScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFA09482BACFB5800A4DBF7 /* MainScannerView.swift */; };
 		FDFA094B2BACFB5900A4DBF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDFA094A2BACFB5900A4DBF7 /* Assets.xcassets */; };
 		FDFA094E2BACFB5900A4DBF7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDFA094D2BACFB5900A4DBF7 /* Preview Assets.xcassets */; };
 		FDFBBE762BAFFE9D00035A58 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFBBE752BAFFE9D00035A58 /* CameraView.swift */; };
@@ -38,8 +38,8 @@
 		FD1A6CC62BDD796B00BB43FB /* auto_scan.ino */ = {isa = PBXFileReference; lastKnownFileType = text; path = auto_scan.ino; sourceTree = "<group>"; };
 		FD71FDD42BDBEB8700927584 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		FDFA09432BACFB5800A4DBF7 /* 3DScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 3DScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FDFA09462BACFB5800A4DBF7 /* HelloWorldApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorldApp.swift; sourceTree = "<group>"; };
-		FDFA09482BACFB5800A4DBF7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FDFA09462BACFB5800A4DBF7 /* ScannerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerApp.swift; sourceTree = "<group>"; };
+		FDFA09482BACFB5800A4DBF7 /* MainScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScannerView.swift; sourceTree = "<group>"; };
 		FDFA094A2BACFB5900A4DBF7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FDFA094D2BACFB5900A4DBF7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FDFA09532BACFB5A00A4DBF7 /* 3DScannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = 3DScannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,8 +77,8 @@
 		FD1A6CAF2BDD763C00BB43FB /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				FDFA09462BACFB5800A4DBF7 /* HelloWorldApp.swift */,
-				FDFA09482BACFB5800A4DBF7 /* ContentView.swift */,
+				FDFA09462BACFB5800A4DBF7 /* ScannerApp.swift */,
+				FDFA09482BACFB5800A4DBF7 /* MainScannerView.swift */,
 				FDFBBE752BAFFE9D00035A58 /* CameraView.swift */,
 			);
 			path = Views;
@@ -277,8 +277,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FDFBBE762BAFFE9D00035A58 /* CameraView.swift in Sources */,
-				FDFA09492BACFB5800A4DBF7 /* ContentView.swift in Sources */,
-				FDFA09472BACFB5800A4DBF7 /* HelloWorldApp.swift in Sources */,
+				FDFA09492BACFB5800A4DBF7 /* MainScannerView.swift in Sources */,
+				FDFA09472BACFB5800A4DBF7 /* ScannerApp.swift in Sources */,
 				FDFBBE782BAFFF9900035A58 /* BTController.swift in Sources */,
 				FD71FDD52BDBEB8700927584 /* ContentViewModel.swift in Sources */,
 			);

@@ -1,6 +1,6 @@
 //
-//  HelloWorldApp.swift
-//  HelloWorld
+//  ScannerApp.swift
+//  ScannerApp
 //
 //  Created by Alexander Onishchenko on 22.03.2024.
 //
@@ -8,10 +8,10 @@
 import SwiftUI
 
 @main
-struct HelloWorldApp: App {
+struct ScannerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainScannerView()
         }
     }
 }
