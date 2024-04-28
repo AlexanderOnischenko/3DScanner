@@ -33,7 +33,7 @@ These values must align with those programmed into the Bluetooth module. You can
 
 Arduino scetch uses pins 6 and 5 for Bluetooth communication and pins 8-11 for stepper motor. You can modify this pins in auto_scan.ino scetch. It is important to notice that wheen you copy arduino scetch, you should copy BluetoothConfig.h file as well
 
-The Arduino sketch incorporates a debug mode which can be enabled or disabled by modifying the `#define debug` directive. This mode allows for the simulation of Bluetooth commands through the serial port, facilitating testing without the actual Bluetooth module.
+The Arduino sketch incorporates a debug mode which can be enabled or disabled by modifying the `#define debug` directive. This mode allows for the simulation of Bluetooth commands through the serial port, facilitating testing of Arduino assemply alone without the actual Bluetooth connection.
 
 ### Permissions
 To operate correctly, the app requires several permissions which must be declared in your project's Info.plist:
