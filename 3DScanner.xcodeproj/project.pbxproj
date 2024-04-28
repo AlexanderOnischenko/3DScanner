@@ -11,6 +11,7 @@
 		FD1A6CCA2BDD7BA300BB43FB /* CameraControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD1A6CC92BDD7BA300BB43FB /* CameraControlView.swift */; };
 		FD1A6CCC2BDD7FEF00BB43FB /* FocusIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD1A6CCB2BDD7FEF00BB43FB /* FocusIndicatorView.swift */; };
 		FD1A6CCF2BDDA89500BB43FB /* BluetoothConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD1A6CCE2BDDA89500BB43FB /* BluetoothConnectionManager.swift */; };
+		FD1A6CD22BDE641B00BB43FB /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = FD1A6CD12BDE641B00BB43FB /* LICENSE */; };
 		FD71FDD52BDBEB8700927584 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD71FDD42BDBEB8700927584 /* ContentViewModel.swift */; };
 		FDFA09472BACFB5800A4DBF7 /* ScannerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFA09462BACFB5800A4DBF7 /* ScannerApp.swift */; };
 		FDFA09492BACFB5800A4DBF7 /* MainScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFA09482BACFB5800A4DBF7 /* MainScannerView.swift */; };
@@ -44,6 +45,7 @@
 		FD1A6CCB2BDD7FEF00BB43FB /* FocusIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusIndicatorView.swift; sourceTree = "<group>"; };
 		FD1A6CCE2BDDA89500BB43FB /* BluetoothConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothConnectionManager.swift; sourceTree = "<group>"; };
 		FD1A6CD02BDE59AB00BB43FB /* 3DScanner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "3DScanner-Bridging-Header.h"; sourceTree = "<group>"; };
+		FD1A6CD12BDE641B00BB43FB /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		FD71FDD42BDBEB8700927584 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		FDFA09432BACFB5800A4DBF7 /* 3DScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 3DScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDFA09462BACFB5800A4DBF7 /* ScannerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerApp.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 		FDFA093A2BACFB5800A4DBF7 = {
 			isa = PBXGroup;
 			children = (
+				FD1A6CD12BDE641B00BB43FB /* LICENSE */,
 				FD1A6CC52BDD796B00BB43FB /* Arduino */,
 				FD1A6CB12BDD786E00BB43FB /* README.md */,
 				FDFA09452BACFB5800A4DBF7 /* App */,
@@ -269,6 +272,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD1A6CD22BDE641B00BB43FB /* LICENSE in Resources */,
 				FDFA094E2BACFB5900A4DBF7 /* Preview Assets.xcassets in Resources */,
 				FDFA094B2BACFB5900A4DBF7 /* Assets.xcassets in Resources */,
 			);

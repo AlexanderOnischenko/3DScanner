@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Разрешите доступ к камере, чтобы делать снимки 3D объектов</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Разрешите доступ к фото, чтобы добавлять снимки 3D объектов в вашу галерею.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
