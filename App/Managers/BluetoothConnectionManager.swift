@@ -13,6 +13,7 @@ import CoreBluetooth
 internal let BTDeviceName =  String(cString: DEVICE_NAME)
 internal let serviceUUID = CBUUID(string: String(cString: SERVICE_UUID))
 internal let characteristicUUID = CBUUID(string: String(cString: CHARACTERISTIC_UUID))
+internal let terminatingChar = String(cString: TERM_CHAR)
 
 protocol BluetoothConnectionManagerDelegate: AnyObject {
     func bluetoothDidUpdateState(_ stateString: String)

@@ -5,11 +5,18 @@
 //  Created by Alexander Onishchenko on 24.03.2024.
 //
 
+import Foundation
+import CoreBluetooth
+
 internal let default_numshots = 20
 internal let gearRatio512 = 2176 // real gear ratio is 51/12, then we multiply it on 512 (full cycle)
-internal let terminatingChar = "b"
 
-import CoreBluetooth
+// These constants use names of BT device defined in BluetoothConfig.h
+// imported to the project through 3DScanner-Bridging-Header.h
+internal let rotateChar = String(cString: ROTATE_CHAR)
+internal let setNumshotCharS = String(cString: SET_NUMSHOTS_START)
+internal let setNumshotCharX = String(cString: SET_NUMSHOTS_END)
+
 
 class BluetoothController: ObservableObject, BluetoothConnectionManagerDelegate {
     var connectionManager: BluetoothProtocolClient
@@ -35,8 +42,7 @@ class BluetoothController: ObservableObject, BluetoothConnectionManagerDelegate 
             return false
         }
         // команды для начала сканирования
-        //print("шлем восьмерку\n")
-        guard let data:Data = "8".data(using: .ascii) else {
+        guard let data:Data = rotateChar.data(using: .ascii) else {
                     // Обработка ошибки преобразования строки в данные
                     return false
                 }
@@ -81,8 +87,8 @@ class BluetoothController: ObservableObject, BluetoothConnectionManagerDelegate 
                 numShots = 0
             }
             let steps: Int = gearRatio512 / numShots
-            print("S\(steps)X")
-            guard let data:Data = "S\(steps)X".data(using: .utf8) else {
+            let outputString = setNumshotCharS + "\(steps)" + setNumshotCharX
+            guard let data:Data = outputString.data(using: .ascii) else {
                 // Обработка ошибки преобразования строки в данные
                 return false
             }
