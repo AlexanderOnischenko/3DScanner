@@ -32,7 +32,10 @@ class BluetoothController: ObservableObject, BluetoothConnectionManagerDelegate 
         // выводим сообщение в лог
         print(stateString)
         // обновить состояние соединения на UI
-        connectionState = stateString
+        DispatchQueue.main.async {
+            // Ensure you're updating the UI on the main thread
+            self.connectionState = stateString
+        }
     }
     
     func rotate() -> Bool {
@@ -81,10 +84,13 @@ class BluetoothController: ObservableObject, BluetoothConnectionManagerDelegate 
         if !connectionManager.isReady() {
             return false
         } else {
-            if (num >= 0) {
-                numShots = num
-            } else {
-                numShots = 0
+            // published свойства обновляем на основном потоке
+            DispatchQueue.main.async {
+                if (num >= 0) {
+                    self.numShots = num
+                } else {
+                    self.numShots = 0
+                }
             }
             let steps: Int = gearRatio512 / numShots
             let outputString = setNumshotCharS + "\(steps)" + setNumshotCharX
