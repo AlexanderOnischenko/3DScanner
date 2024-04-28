@@ -1,11 +1,11 @@
 #include <SoftwareSerial.h>
 #include <AccelStepper.h>
+#include <BluetoothConfig.h>
 
 //#define DEBUG
 
 #define RX_PIN 5
 #define TX_PIN 6
-#define TERM_CHAR 'b'
 
 #define STEPPER_PIN1 8
 #define STEPPER_PIN2 9
@@ -55,11 +55,11 @@ void handleReceivedChar(char receivedChar) {
     case '4': activateStepper(STEPPER_PIN4); break;
     case '0': deactivateStepper(); break;
     // операционные команды
-    case '8': rotate(numSteps); break;
-    case '9': rotateBackwards(numSteps); break;
+    case ROTATE_CHAR: rotate(numSteps); break;
+    case ROTATE_BACKWARDS_CHAR: rotateBackwards(numSteps); break;
     case TERM_CHAR: deactivateStepper(); break;
     // команды настройки
-    case 'S': updateNumSteps(); break;
+    case SET_NUMSHOTS_START: updateNumSteps(); break;
     default: Serial.println("Invalid Command");
   }
 }
@@ -119,7 +119,7 @@ void updateNumSteps() {
     char inChar = inputSource->read();
     Serial.print(inChar); // Отладочный вывод полученного символа
 
-    if (inChar == 'X') {
+    if (inChar == SET_NUMSHOTS_END) {
       break; // Выход из цикла при встрече с символом 'X'
     }
     inputString += inChar; // Добавление символа к строке

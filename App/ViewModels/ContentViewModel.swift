@@ -6,15 +6,13 @@
 //
 
 import Foundation
-import SwiftUI
-import UIKit
 import AVFoundation
 
 class ContentViewModel: ObservableObject {
-    private var myBT = BluetoothController()
     @Published var bluetoothStatus: String = "Disconnected"
     @Published var numShots: Int = 0
     @Published var cameraManager = CameraManager()
+    private var myBT = BluetoothController()
     private var scanningStopped = false
     private let scanningQueue = DispatchQueue(label: "com.example.scanning")
 

@@ -43,6 +43,7 @@
 		FD1A6CC92BDD7BA300BB43FB /* CameraControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlView.swift; sourceTree = "<group>"; };
 		FD1A6CCB2BDD7FEF00BB43FB /* FocusIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusIndicatorView.swift; sourceTree = "<group>"; };
 		FD1A6CCE2BDDA89500BB43FB /* BluetoothConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothConnectionManager.swift; sourceTree = "<group>"; };
+		FD1A6CD02BDE59AB00BB43FB /* 3DScanner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "3DScanner-Bridging-Header.h"; sourceTree = "<group>"; };
 		FD71FDD42BDBEB8700927584 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		FDFA09432BACFB5800A4DBF7 /* 3DScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 3DScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDFA09462BACFB5800A4DBF7 /* ScannerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerApp.swift; sourceTree = "<group>"; };
@@ -146,6 +147,7 @@
 				FDFBBE792BB001E300035A58 /* Info.plist */,
 				FDFA094A2BACFB5900A4DBF7 /* Assets.xcassets */,
 				FDFA094C2BACFB5900A4DBF7 /* Preview Content */,
+				FD1A6CD02BDE59AB00BB43FB /* 3DScanner-Bridging-Header.h */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -479,6 +481,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Scan3D.App;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "App/3DScanner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -515,6 +518,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Scan3D.App;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "App/3DScanner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
