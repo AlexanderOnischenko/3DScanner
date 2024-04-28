@@ -7,14 +7,113 @@
 
 internal let default_numshots = 20
 internal let gearRatio512 = 2176 // real gear ratio is 51/12, then we multiply it on 512 (full cycle)
-internal let BTDeviceName = "BT05" // Name of My BLE. Initialize: AT+NAMECC2541\r\n
-internal let serviceUUID = CBUUID(string: "FFE0") // Service UUID of My BLE. Initialize: AT+UUIDFABF\r\n
-internal let characteristicUUID = CBUUID(string: "FFE1") // Char ID of My BLE. Initialize: AT+CHARA2B2\r\n
 internal let terminatingChar = "b"
 
+enum BluetoothError: Error {
+    case invalidState(String)
+    case busy(String)
+    case unknownError
+}
 
 import CoreBluetooth
 
+class BluetoothController: ObservableObject, BluetoothConnectionManagerDelegate {
+    var connectionManager: BluetoothProtocolClient
+    @Published var numShots = default_numshots
+    @Published var connectionState = "Starting..."
+    
+    init() {
+        connectionManager = BluetoothProtocolClient()
+        connectionManager.delegate = self
+    }
+
+    func bluetoothDidUpdateState(_ stateString: String) {
+        // выводим сообщение в лог
+        print(stateString)
+        // обновить состояние соединения на UI
+        connectionState = stateString
+    }
+    
+    func didDiscoverPeripheral(_ peripheral: CBPeripheral, advertisementData: [String: Any], rssi RSSI: NSNumber) {
+        // Логика решения о подключении к устройству
+        connectionManager.connectPeripheral(peripheral)
+    }
+    
+    func didUpdateValueForCharacteristic(_ peripheral: CBPeripheral, characteristic: CBCharacteristic, error: Error?) {
+        }
+    
+    func rotate() -> Bool {
+        // проверяем готовность устройства
+        print("Async: вошли в rotate")
+        if !connectionManager.isReady() {
+            return false
+        }
+        // команды для начала сканирования
+        //print("шлем восьмерку\n")
+        guard let data:Data = "8".data(using: .ascii) else {
+                    // Обработка ошибки преобразования строки в данные
+                    return false
+                }
+        connectionManager.sendData(data: data)
+        print("Async: ждем в rotate")
+        connectionManager.waitForSuccess()
+        print("Async: проехали rotate")
+        return true
+     }
+    
+    func prepareForScanning() {
+        connectionManager.prepareForScanning()
+        }
+  
+    
+
+    
+    func stopScanning() {
+        connectionManager.stopWaiting()
+    }
+    
+    func getNumshots() -> Int {
+        return numShots
+    }
+    
+    func decreaseNumber() {
+        if numShots == 1 {
+            return
+        }
+  //      objectWillChange.send()
+        setNumshots(num: getNumshots()-1)
+    }
+
+    func increaseNumber() {
+   //     objectWillChange.send()
+        setNumshots(num: getNumshots()+1)
+    }
+
+    func setNumshots(num: Int) -> Bool {
+        if !connectionManager.isReady() {
+            return false
+        } else {
+            if (num >= 0) {
+                numShots = num
+            } else {
+                numShots = 0
+            }
+            let steps: Int = gearRatio512 / numShots
+            print("S\(steps)X")
+            guard let data:Data = "S\(steps)X".data(using: .utf8) else {
+                // Обработка ошибки преобразования строки в данные
+                return false
+            }
+            connectionManager.sendData(data: data)
+            print("Async: ждем в setNumshots")
+            connectionManager.waitForSuccess()
+            print("Async: проехали setNumshots")
+        }
+        return true
+    }
+}
+
+/*
 class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     private var centralManager: CBCentralManager!
     private var peripheral: CBPeripheral?
@@ -243,4 +342,4 @@ class BluetoothController: NSObject, ObservableObject, CBCentralManagerDelegate,
         }
         return true
     }
-}
+}*/

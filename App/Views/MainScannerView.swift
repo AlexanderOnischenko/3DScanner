@@ -18,6 +18,7 @@ struct MainScannerView : View {
                  controlPanel
                  Spacer()
                  bottomButtons
+                 bluetoothStatusView
              }
          }
      }
@@ -34,7 +35,7 @@ struct MainScannerView : View {
                      .cornerRadius(5)
              }
              
-             Text("\(viewModel.myBT.numShots)")
+             Text("\(viewModel.numShots)")
                  .font(.system(size: 48))
                  .foregroundColor(.white)
                  .padding()
@@ -76,6 +77,13 @@ struct MainScannerView : View {
          }
          .padding()
      }
+    
+    private var bluetoothStatusView: some View {
+        Text(viewModel.bluetoothStatus)
+            .font(.caption)
+            .foregroundColor( .white)
+            .padding()
+    }
 
 }
 

@@ -11,13 +11,21 @@ import UIKit
 import AVFoundation
 
 class ContentViewModel: ObservableObject {
-    public var isScanningInterrupted = false
-    @Published var myBT = BluetoothController()
+    private var myBT = BluetoothController()
+    @Published var bluetoothStatus: String = "Disconnected"
+    @Published var numShots: Int = 0
     @Published var cameraManager = CameraManager()
     private var scanningStopped = false
     private let scanningQueue = DispatchQueue(label: "com.example.scanning")
 
     init() {
+        setupBindings()
+    }
+    
+    private func setupBindings() {
+        // Подписка на изменения состояния Bluetooth в контроллере
+        myBT.$connectionState.assign(to: &$bluetoothStatus)
+        myBT.$numShots.assign(to: &$numShots)
     }
 
     
