@@ -13,6 +13,8 @@ To improve functionality and user interaction, this application provides direct 
 
 The 3DScanner Control App is designed to interact with a rotary table equipped with an Arduino board and a Bluetooth 4.0 compatible module such as HM-10 or AT-09 (based on CC2541 chipset), along with a BYJ28 stepper motor. The app facilitates synchrnonization between the table's rotation and camera actions.
 
+![Screenshot of the App](screenshots/app_screenshot.png "App Screenshot")
+
 ## Bluetooth Module Requirements
 
 The application requires a Bluetooth LE module that supports specific service and characteristic UUIDs. Compatible modules include HM-10 or other CC2541 chipset-based devices. Note that iOS devices might not detect these modules immediately; using specialized apps like Beacon app, LightBlue, or BlueSee can help in detecting and troubleshooting connections.
